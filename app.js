@@ -123,23 +123,18 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   async function callRagApi(userMessage) {
-    const endpoint = apiEndpointInput.value.trim() || 'https://your-api-endpoint.com/chat';
-    const apiKey = apiKeyInput.value.trim() || 'YOUR_API_KEY_HERE';
-    const systemPrompt = systemPromptInput.value.trim() || 'You are AnnanScience, a friendly science teacher for kids aged 6-12.';
+    const endpoint = apiEndpointInput.value.trim() || 'http://localhost:5000/chat';
+    const sessionId = getSessionId();
 
     const payload = {
-      model: 'rag-model-placeholder',
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: userMessage }
-      ]
+      message: userMessage,
+      session_id: sessionId
     };
 
     const response = await fetch(endpoint, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(payload)
     });
@@ -149,8 +144,48 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const data = await response.json();
-
-    // Assuming the RAG API returns { answer: "text" }
     return data;
   }
+
+  function getSessionId() {
+    // Generate or get existing session ID for conversation continuity
+    let sessionId = localStorage.getItem('annanscience_session_id');
+    if (!sessionId) {
+      sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+      localStorage.setItem('annanscience_session_id', sessionId);
+    }
+    return sessionId;
+  }
+
+  window.resetConversation = async function() {
+    try {
+      const endpoint = apiEndpointInput.value.trim() || 'http://localhost:5000/reset';
+      const sessionId = getSessionId();
+
+      await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ session_id: sessionId })
+      });
+
+      // Clear chat messages
+      chatMessages.innerHTML = `
+        <div class="message assistant-message">
+          <div class="message-avatar">🧪</div>
+          <div class="message-content">
+            <p>مرحباً أصدقائي الصغار! 👋 أنا AnnanScience، معلمكم الودود في العلوم!</p>
+            <p>اسألوني عن أي شيء في العلوم - من لماذا السماء زرقاء 🌌 إلى كيف تنمو النباتات 🌱!</p>
+            <p>ماذا تريدون أن نستكشف اليوم؟ 🔍</p>
+          </div>
+        </div>
+      `;
+      
+      alert('تم إعادة تعيين المحادثة! 🎉');
+    } catch (error) {
+      console.error('Error resetting conversation:', error);
+      alert('حدث خطأ أثناء إعادة تعيين المحادثة.');
+    }
+  };
 });
