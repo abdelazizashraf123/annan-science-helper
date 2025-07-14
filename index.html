@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnnanScience - Your Science Friend!</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <h1>🧪 AnnanScience</h1>
+                <p class="subtitle">Your friendly science helper!</p>
+            </div>
+            <div class="header-buttons">
+                <button class="settings-btn" onclick="toggleSettings()">⚙️ Settings</button>
+            </div>
+        </header>
+
+        <!-- Settings Panel -->
+        <div id="settings-panel" class="settings-panel hidden">
+            <div class="settings-content">
+                <h3>🔧 Settings</h3>
+                <div class="setting-group">
+                    <label for="api-endpoint">API Endpoint:</label>
+                    <input type="text" id="api-endpoint" placeholder="https://your-api-endpoint.com/chat" value="YOUR_API_ENDPOINT_HERE">
+                </div>
+                <div class="setting-group">
+                    <label for="api-key">API Key:</label>
+                    <input type="password" id="api-key" placeholder="Enter your API key" value="YOUR_API_KEY_HERE">
+                </div>
+                <div class="setting-group">
+                    <label for="system-prompt">System Message:</label>
+                    <textarea id="system-prompt" rows="4" placeholder="How should I behave?">You are AnnanScience, a friendly and enthusiastic science teacher for kids aged 6-12. Always explain science concepts in simple, fun ways using analogies kids can understand. Use emojis and encourage curiosity. Keep responses age-appropriate and exciting!</textarea>
+                </div>
+                <button class="save-btn" onclick="saveSettings()">💾 Save Settings</button>
+                <button class="close-btn" onclick="toggleSettings()">❌ Close</button>
+            </div>
+        </div>
+
+        <!-- Chat Container -->
+        <main class="chat-container">
+            <div id="chat-messages" class="chat-messages">
+                <div class="message assistant-message">
+                    <div class="message-avatar">🧪</div>
+                    <div class="message-content">
+                        <p>Hi there, young scientist! 👋 I'm AnnanScience, your friendly science helper!</p>
+                        <p>Ask me anything about science - from why the sky is blue 🌌 to how plants grow 🌱!</p>
+                        <p>What would you like to explore today? 🔍</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Loading indicator -->
+            <div id="loading" class="loading hidden">
+                <div class="message assistant-message">
+                    <div class="message-avatar">🧪</div>
+                    <div class="message-content">
+                        <div class="typing-indicator">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <p>Thinking about your question... 🤔</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Input Area -->
+        <div class="input-area">
+            <div class="input-container">
+                <textarea id="message-input" placeholder="Ask me about science! 🔬" rows="1"></textarea>
+                <div class="input-buttons">
+                    <button class="action-btn" onclick="attachFile()" title="Attach a picture">📎 Attach</button>
+                    <button class="action-btn" onclick="searchWeb()" title="Search the web">🔍 Search</button>
+                    <button class="action-btn" onclick="voiceInput()" title="Voice input">🎤 Voice</button>
+                    <button class="send-btn" onclick="sendMessage()" title="Send message">🚀 Send</button>
+                </div>
+            </div>
+            <div class="disclaimer">
+                <p>🌟 Remember: Always ask a grown-up before doing any science experiments!</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
