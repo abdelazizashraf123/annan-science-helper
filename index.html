@@ -22,18 +22,16 @@
         <!-- Settings Panel -->
         <div id="settings-panel" class="settings-panel hidden">
             <div class="settings-content">
-                <h3>🔧 Settings</h3>
                 <div class="setting-group">
                     <label for="api-endpoint">API Endpoint:</label>
-                    <input type="text" id="api-endpoint" placeholder="https://your-api-endpoint.com/chat" value="YOUR_API_ENDPOINT_HERE">
-                </div>
-                <div class="setting-group">
-                    <label for="api-key">API Key:</label>
-                    <input type="password" id="api-key" placeholder="Enter your API key" value="YOUR_API_KEY_HERE">
+                    <input type="text" id="api-endpoint" placeholder="http://localhost:5000/chat" value="http://localhost:5000/chat">
                 </div>
                 <div class="setting-group">
                     <label for="system-prompt">System Message:</label>
-                    <textarea id="system-prompt" rows="4" placeholder="How should I behave?">You are AnnanScience, a friendly and enthusiastic science teacher for kids aged 6-12. Always explain science concepts in simple, fun ways using analogies kids can understand. Use emojis and encourage curiosity. Keep responses age-appropriate and exciting!</textarea>
+                    <textarea id="system-prompt" rows="4" placeholder="How should I behave?" readonly>أنا معلم ودود أشرح المواد المدرسية للطلاب من الصف الأول إلى الصف الثاني عشر. سأقدم الإجابات باللغة العربية فقط بأسلوب بسيط وودود يناسب الأطفال من عمر 6-12 سنة.</textarea>
+                </div>
+                <div class="setting-group">
+                    <button class="reset-btn" onclick="resetConversation()">🔄 إعادة تعيين المحادثة</button>
                 </div>
                 <button class="save-btn" onclick="saveSettings()">💾 Save Settings</button>
                 <button class="close-btn" onclick="toggleSettings()">❌ Close</button>
