@@ -114,7 +114,8 @@ body {
 }
 
 .save-btn,
-.close-btn {
+.close-btn,
+.reset-btn {
   background: #6ec1e4;
   border: none;
   border-radius: 8px;
@@ -123,12 +124,23 @@ body {
   font-weight: 600;
   cursor: pointer;
   margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
   transition: background 0.3s ease;
+  width: 100%;
 }
 
 .save-btn:hover,
-.close-btn:hover {
+.close-btn:hover,
+.reset-btn:hover {
   background: #4a9bd6;
+}
+
+.reset-btn {
+  background: #ff6b6b;
+}
+
+.reset-btn:hover {
+  background: #ff5252;
 }
 
 /* Chat Container */
