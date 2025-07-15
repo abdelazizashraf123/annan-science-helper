@@ -32,7 +32,7 @@ docstring_parser==0.16
 einops==0.8.1
 et_xmlfile==2.0.0
 executing==2.2.0
-faiss==1.9.0
+faiss
 fastjsonschema==2.21.1
 filelock==3.13.1
 FlagEmbedding==1.3.5
