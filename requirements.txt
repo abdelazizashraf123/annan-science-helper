@@ -206,7 +206,7 @@ webencodings==0.5.1
 websocket-client==1.8.0
 wheel==0.45.1
 widgetsnbextension==4.0.14
-xformers @ https://download.pytorch.org/whl/cu128/xformers-0.0.30-cp312-cp312-manylinux_2_28_x86_64.whl#sha256=e2602a3f36c1d5c3aec7dc9f79050e3db5c1e94fc11ad929afbdb409c6d611d5
+xformers
 xxhash==3.5.0
 yarl==1.20.1
 zlib-state==0.1.9
