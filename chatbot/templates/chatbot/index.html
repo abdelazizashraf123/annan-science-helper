@@ -1,0 +1,150 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnnSci - معلم العلوم الذكي</title>
+    <link rel="stylesheet" href="{% static 'chatbot/css/style.css' %}">
+    <style>
+        .input-buttons .action-btn {
+            background: #6ec1e4;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            color: white;
+            font-size: 1.2rem;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background 0.3s ease;
+        }
+        .input-buttons .action-btn:hover {
+            background: #4a9bd6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <h1>🧪 AnnanScience</h1>
+                <p class="subtitle">معلم العلوم الودود الخاص بك!</p>
+            </div>
+            <div class="header-buttons">
+                <button class="settings-btn">⚙️ الإعدادات</button>
+            </div>
+        </header>
+
+        <!-- Settings Panel -->
+        <div id="settings-panel" class="settings-panel hidden">
+            <div class="settings-content">
+                <h3>🔧 الإعدادات</h3>
+                <div class="setting-group">
+                    <label for="api-endpoint">نقطة نهاية API:</label>
+                    <input type="text" id="api-endpoint" placeholder="https://your-api-endpoint.com/chat" value="YOUR_API_ENDPOINT_HERE">
+                </div>
+                <div class="setting-group">
+                    <label for="api-key">مفتاح API:</label>
+                    <input type="password" id="api-key" placeholder="أدخل مفتاح API الخاص بك" value="YOUR_API_KEY_HERE">
+                </div>
+                <div class="setting-group">
+                    <label for="system-prompt">رسالة النظام:</label>
+                    <textarea id="system-prompt" rows="4" placeholder="كيف يجب أن أتصرف؟">أنت AnnanScience، معلم علم ودود ومتحمس للأطفال من سن 6 إلى 12 عامًا. اشرح دائمًا مفاهيم العلم بطرق بسيطة وممتعة باستخدام التشبيهات التي يمكن للأطفال فهمها. استخدم الرموز التعبيرية وشجع الفضول. اجعل الردود مناسبة للعمر ومثيرة!</textarea>
+                </div>
+                <button class="save-btn">💾 حفظ الإعدادات</button>
+                <button class="close-btn">❌ إغلاق</button>
+            </div>
+        </div>
+
+        <!-- Chat Container -->
+        <main class="chat-container">
+            <div id="chat-messages" class="chat-messages">
+                {% for message in messages %}
+                    {% if message.role == 'assistant' %}
+                        <div class="message assistant-message">
+                            <div class="message-avatar">🧪</div>
+                            <div class="message-content">{{ message.content|safe }}</div>
+                        </div>
+                    {% else %}
+                        <div class="message user-message">
+                            <div class="message-content">{{ message.content|safe }}</div>
+                        </div>
+                    {% endif %}
+                {% empty %}
+                    <div class="message assistant-message">
+                        <div class="message-avatar">🧪</div>
+                        <div class="message-content">
+                            <p>مرحبًا يا عالم صغير! 👋 أنا AnnanScience، معلمك العلمي الودود!</p>
+                            <p>اسألني أي شيء عن العلم - من لماذا السماء زرقاء 🌌 إلى كيف تنمو النباتات 🌱!</p>
+                            <p>ما الذي تريد استكشافه اليوم؟ 🔍</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            
+            <!-- Loading indicator -->
+            <div id="loading" class="loading {% if not loading %}hidden{% endif %}">
+                <div class="message assistant-message">
+                    <div class="message-avatar">🧪</div>
+                    <div class="message-content">
+                        <div class="typing-indicator">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <p>أفكر في سؤالك... 🤔</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Input Area -->
+        <div class="input-area">
+            <form id="message-form" method="POST" action="{% url 'chatbot_view' %}" style="display: contents;">
+                {% csrf_token %}
+                <div class="input-container">
+                    <textarea id="message-input" name="query" placeholder="اسألني عن العلم! 🔬" rows="1"></textarea>
+                    <div class="input-buttons">
+                        <button type="submit" class="action-btn" title="إرسال">🚀</button>
+                        <button type="button" class="action-btn" title="إدخال صوتي" disabled>🎤</button>
+                        <button type="button" class="action-btn" title="البحث" disabled>🔍</button>
+                        <button type="button" class="action-btn" title="إرفاق" disabled>📎</button>
+                    </div>
+                </div>
+            </form>
+            <div class="disclaimer">
+                <p>🌟 تذكر: اسأل شخصًا بالغًا قبل إجراء أي تجارب علمية!</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('message-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                document.getElementById('message-form').submit();
+            }
+        });
+
+        document.getElementById('message-form').addEventListener('submit', function(e) {
+            const messageInput = document.getElementById('message-input');
+            if (!messageInput.value.trim()) {
+                e.preventDefault();
+                return;
+            }
+            const loading = document.getElementById('loading');
+            loading.classList.remove('hidden');
+            const chatMessages = document.getElementById('chat-messages');
+            chatMessages.innerHTML += `
+                <div class="message user-message">
+                    <div class="message-content">${messageInput.value}</div>
+                </div>
+            `;
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        });
+    </script>
+</body>
+</html>
