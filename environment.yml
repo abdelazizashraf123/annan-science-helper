@@ -1,0 +1,13 @@
+name: myenv
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pip
+  - django
+  - gunicorn
+  - faiss-gpu
+  - faiss-cpu # 👈 Replace with actual Conda-only lib
+  - pip:
+      - -r file:requirements.txt
