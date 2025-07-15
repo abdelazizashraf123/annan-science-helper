@@ -121,7 +121,7 @@ nvidia-nvtx-cu12==12.8.55
 openpyxl==3.1.5
 orjson==3.11.0
 overrides==7.7.0
-packaging @ file:///croot/packaging_1734472117206/work
+packaging
 pandas==2.3.1
 pandocfilters==1.5.1
 parso==0.8.4
